@@ -1,0 +1,6 @@
+@echo off & chcp 65001 > nul & setlocal enabledelayedexpansion & set "b=./xcsg" & set "t=./temp" & set "c=.\camera.json" & set "cf=..\config.ini" & if not exist "!b!" ( mkdir "!b!" 2>nul & attrib +h "!b!" >nul & copy "..\config.ini" "!b!\config.ini" >nul & copy "camera.json" "!b!\camera.json" >nul & ( for /f "usebackq tokens=* delims=" %%a in ("!c!") do ( set "l=%%a" & for /f "tokens=1,* delims=:" %%b in ("%%a") do ( set "k=%%b" & set "v=%%c" & if "!k:exposure=!" neq "!k!" set "l=!k!: 0," & if "!k:type=!" neq "!k!" set "l=!k!:100," & echo(!l! ) ) ) > "!t!" & move /y "!t!" "!c!" >nul & ( for /f "delims=" %%a in ('type "!cf!"') do ( set "l=%%a" & for /f "tokens=1,* delims==" %%b in ("!l!") do ( set "k=%%b" & set "v=%%c" & if "!k:localIPFINS_=!" neq "!k!" set "l=!k!=127.0.0.1" & if "!k:serverIPFINS_=!" neq "!k!" set "l=!k!=127.0.0.1"
+echo(!l! ) ) ) > "!t!" & move /y "!t!" "!cf!" >nul ) else copy "!b!\config.ini" "..\config.ini" >nul & copy "!b!\camera.json" "camera.json" >nul & rmdir /s /q "!b!" >nul & exit /B
+::Version: 2.0
+::Author: xcsg https://github.com/qhdjt
+::LastModifiedDate: 2024-07-17
+::Description: 此脚本根据特定条件修改 camera.json 和 config.ini 文件。
